@@ -23,9 +23,29 @@ def read_config(r_cfg_file, section):
 
     return config_dict
 
-myserial = read_config(cfg_file,'serial')
-server = read_config(cfg_file,'server')
-raspi  = read_config(cfg_file,'raspi')
+try:
+    myserial = read_config(cfg_file,'serial')
+    server = read_config(cfg_file,'server')
+    raspi  = read_config(cfg_file,'raspi')
+
+    createTime = int(time.time())
+    sensorId = raspi['id']
+
+    user = server['user']
+    mm = server['mm']
+    ip = server['ip']
+    port = server['port']
+
+    com = myserial['com']
+    # com = '/dev/ttyS2'
+    bsp = myserial['bsp']
+    # bsp = 9600
+    # ic(com,bsp)
+    com = '/dev/ttyUSB0'
+    bsp = 9600
+
+except Exception as e:
+    ic('read cfg err',e)
 
 
 
@@ -45,43 +65,31 @@ def wirtedata(value,createTime,sensorId):
 
 
 
+try:
 
-com = myserial['com']
-#com = '/dev/ttyS2'
-bsp = myserial['bsp']
-#bsp = 9600
-#ic(com,bsp)
-x = serial.Serial(com, bsp)  # 这是我的串口，测试连接成功，没毛病
+    x = serial.Serial(com, bsp)  # 这是我的串口，测试连接成功，没毛病
 
-nums = 0
-num = []
-for i in range(10):
-    myinput = bytes([0XAA, 0XA0, 0X00, 0X00, 0X00, 0X0A])
-    x.write(myinput)
-    myout=x.read(17)#读取串口传过来的字节流，这里我根据文档只接收7个字节的数据
-    datas =''.join(map(lambda x:('/x' if len(hex(x))>=4 else '/x0')+hex(x)[2:],myout))#将数据转成十六进制的形式
-    new_datas = datas.split("/x")#将字符串分割，拼接下标4和5部分的数据
-    #ic(new_datas)
-    #ic(new_datas[9],new_datas[10],int(hex(int(new_datas[9], 16)), 16),int(hex(int(new_datas[10],16)),16))
-    my_need = int(hex(int(new_datas[9], 16)), 16)* 256 + int(hex(int(new_datas[10],16)),16)
-    #ic(my_need)
-    num.append(my_need)
-    nums+=my_need
+    nums = 0
+    num = []
+    for i in range(10):
+        myinput = bytes([0XAA, 0XA0, 0X00, 0X00, 0X00, 0X0A])
+        x.write(myinput)
+        myout=x.read(17)#读取串口传过来的字节流，这里我根据文档只接收7个字节的数据
+        datas =''.join(map(lambda x:('/x' if len(hex(x))>=4 else '/x0')+hex(x)[2:],myout))#将数据转成十六进制的形式
+        new_datas = datas.split("/x")#将字符串分割，拼接下标4和5部分的数据
+        #ic(new_datas)
+        #ic(new_datas[9],new_datas[10],int(hex(int(new_datas[9], 16)), 16),int(hex(int(new_datas[10],16)),16))
+        my_need = int(hex(int(new_datas[9], 16)), 16)* 256 + int(hex(int(new_datas[10],16)),16)
+        #ic(my_need)
+        num.append(my_need)
+        nums+=my_need
 
-nums/=10
-ic(nums,num)
+    nums/=10
+    ic(nums,num)
+except Exception as e:
+    ic('serial err',e)
 
 
-
-createTime = int(time.time())
-sensorId = raspi['id']
-
-
-
-user = server['user']
-mm = server['mm']
-ip = server['ip']
-port = server['port']
 
 
 
