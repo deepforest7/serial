@@ -41,9 +41,10 @@ try:
     bsp = myserial['bsp']
     # bsp = 9600
     # ic(com,bsp)
-    com = '/dev/ttyUSB0'
-    bsp = 9600
+    #com = '/dev/ttyUSB0'
+    #bsp = 9600
 
+    n = 60
 except Exception as e:
     ic('read cfg err',e)
 
@@ -71,7 +72,7 @@ try:
 
     nums = 0
     num = []
-    for i in range(60):
+    for i in range(n):
         myinput = bytes([0XAA, 0XA0, 0X00, 0X00, 0X00, 0X0A])
         x.write(myinput)
         myout=x.read(17)#读取串口传过来的字节流，这里我根据文档只接收7个字节的数据
@@ -84,7 +85,7 @@ try:
         num.append(my_need)
         nums+=my_need
 
-    nums/=10
+    nums/=n
     ic(nums,num)
 except Exception as e:
     ic('serial err',e)
