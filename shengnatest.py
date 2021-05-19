@@ -7,8 +7,8 @@ import configparser
 from icecream import ic
 import json
 
-cfg_file = 'E:\\shengna\\shengnacfg.ini'
-
+#cfg_file = 'E:\\shengna\\shengnacfg.ini'
+cfg_file = '/home/pi/serial/shengnacfg.ini'
 # read .ini according to section
 def read_config(r_cfg_file, section):
     #print("Read config from " + os.path.abspath(r_cfg_file))
