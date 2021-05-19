@@ -71,7 +71,7 @@ try:
 
     nums = 0
     num = []
-    for i in range(10):
+    for i in range(60):
         myinput = bytes([0XAA, 0XA0, 0X00, 0X00, 0X00, 0X0A])
         x.write(myinput)
         myout=x.read(17)#读取串口传过来的字节流，这里我根据文档只接收7个字节的数据
