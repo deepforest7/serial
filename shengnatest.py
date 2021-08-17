@@ -72,21 +72,20 @@ try:
 
     nums = 0
     num = []
-    for i in range(n):
-        myinput = bytes([0XAA, 0XA0, 0X00, 0X00, 0X00, 0X0A])
-        x.write(myinput)
-        myout=x.read(17)#读取串口传过来的字节流，这里我根据文档只接收7个字节的数据
-        datas =''.join(map(lambda x:('/x' if len(hex(x))>=4 else '/x0')+hex(x)[2:],myout))#将数据转成十六进制的形式
-        new_datas = datas.split("/x")#将字符串分割，拼接下标4和5部分的数据
-        #ic(new_datas)
-        #ic(new_datas[9],new_datas[10],int(hex(int(new_datas[9], 16)), 16),int(hex(int(new_datas[10],16)),16))
-        my_need = int(hex(int(new_datas[9], 16)), 16)* 256 + int(hex(int(new_datas[10],16)),16)
-        #ic(my_need)
-        num.append(my_need)
-        nums+=my_need
 
-    nums/=n
-    ic(nums,num)
+    myinput = bytes([0XAA, 0XA0, 0X00, 0X00, 0X00, 0X0A])
+    x.write(myinput)
+    myout=x.read(17)#读取串口传过来的字节流，这里我根据文档只接收7个字节的数据
+    datas =''.join(map(lambda x:('/x' if len(hex(x))>=4 else '/x0')+hex(x)[2:],myout))#将数据转成十六进制的形式
+    new_datas = datas.split("/x")#将字符串分割，拼接下标4和5部分的数据
+    #ic(new_datas)
+    #ic(new_datas[9],new_datas[10],int(hex(int(new_datas[9], 16)), 16),int(hex(int(new_datas[10],16)),16))
+    my_need = int(hex(int(new_datas[9], 16)), 16)* 256 + int(hex(int(new_datas[10],16)),16)
+    #ic(my_need)
+    num.append(my_need)
+    nums+=my_need
+
+
 except Exception as e:
     ic('serial err',e)
 
